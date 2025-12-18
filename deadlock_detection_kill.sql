@@ -68,6 +68,26 @@ FROM sys.dm_exec_requests r
 CROSS APPLY sys.dm_exec_sql_text(r.sql_handle) t
 WHERE r.blocking_session_id <> 0;
 
+--Use system_health (Already Enabled) SQL Server ships with system_health, which already captures deadlocks.
+
+SELECT
+    XEvent.value('(event/@timestamp)[1]', 'datetime2') AS DeadlockTime,
+    XEvent.value('(event/data/value/deadlock)[1]', 'xml') AS DeadlockGraph
+FROM
+(
+    SELECT CAST(event_data AS XML) AS XEvent
+    FROM sys.fn_xe_file_target_read_file
+    (
+        (SELECT CAST(target_data AS XML)
+         .value('(EventFileTarget/File/@name)[1]', 'nvarchar(4000)')
+         FROM sys.dm_xe_session_targets t
+         JOIN sys.dm_xe_sessions s
+             ON s.address = t.event_session_address
+         WHERE s.name = 'system_health'),
+        NULL, NULL, NULL
+    )
+) AS Deadlocks;
+
 
 
 
