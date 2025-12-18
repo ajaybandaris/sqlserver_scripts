@@ -145,6 +145,15 @@ Case 3: SPID 58 is a reporting query blocking OLTP operations
 Move reporting workloads to Read Committed Snapshot Isolation (RCSI) or use WITH (NOLOCK) if business rules allow.
 
 Case 4: Locks are held due to application issues
+
+--Examples:
+BEGIN TRAN started but COMMIT missing
+ORMs using implicit transactions
+API exceptions that skip transaction commit
+--Fix:
+Push code change to ensure COMMIT/ROLLBACK is guaranteed
+Add timeout handling so app doesn't leave sessions open
+
  ----------------------------------------------
 
 
