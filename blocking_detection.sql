@@ -111,23 +111,16 @@ SPID 58 is executing the following query:
 UPDATE Corporate.Employee SET LastName = 'Ajay Bandari' WHERE BusinessEntityID = 220
 
 When analyzing the root blocker, focus on:
-
-Session status (running, sleeping, suspended)
-
-Wait type (e.g., LCK_M_X, WRITELOG, PAGELATCH_SH)
-
-Wait resource (KEY, PAGE, OBJECT)
-
-Open transaction count
-
-Login, host, and application name to identify the source system
+a. Session status (running, sleeping, suspended)
+b. Wait type (e.g., LCK_M_X, WRITELOG, PAGELATCH_SH)
+c. Wait resource (KEY, PAGE, OBJECT)
+d. Open_transaction_count
+e. Login, host, and application name to identify the source system
 
 If SPID 58 is SLEEPING while still holding an open transaction, this indicates an open transaction left running, which is the most common cause of blocking in OLTP systems.
 
 Key checks:
-
 If the open transaction count is 1 or more, the session is holding locks.
-
 If the session is sleeping, it may be waiting for user input or application logic (for example, an API call paused or waiting for a response), which can severely impact concurrency.
 ----------------------------------------------
 
