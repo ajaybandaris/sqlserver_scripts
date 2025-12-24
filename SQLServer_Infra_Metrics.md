@@ -22,6 +22,4 @@ This section lists commonly monitored **infrastructure-level metrics** for SQL S
 ---
 
 ### Notes
-- Infrastructure metrics **do not fail fast** — they degrade slowly and mask deeper query or design issues.
 - Always correlate infra metrics with **query execution plans, waits, and index usage**.
-- Sustained pressure is more dangerous than short spikes.
