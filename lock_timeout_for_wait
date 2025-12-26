@@ -1,0 +1,5 @@
+-- Fail fast if a lock cannot be acquired in 5 seconds
+SET LOCK_TIMEOUT 5000; 
+
+-- Set background jobs to be the "sacrificial lamb" in deadlocks. Kill me if i run into deadlock
+SET DEADLOCK_PRIORITY LOW;
